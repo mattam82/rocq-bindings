@@ -2,6 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+function notNoInit (element : string, index : number, array : string[]) {
+	return (element !== '-no-init');
+}
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -18,12 +22,14 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 		let config = vscode.workspace.getConfiguration('coqtop');
 		let args = config.get<string[]>('args') ?? [];
-		if (args.includes('-noinit') === true)
-		{	args.filter((arg) => arg !== '-noinit');	}
-		{ args.push('-noinit'); }
-		config.update ('args', args, vscode.ConfigurationTarget.Workspace);
+		let newargs : string[] = [];
+		vscode.window.showInformationMessage('coqtop.args = ' + args);
+		vscode.window.showInformationMessage('includes noinit = ' + args?.includes("-noinit"));
+		if (args?.includes("-noinit")) { newargs = args.filter(notNoInit); }
+		else { args?.push ("-noinit"); newargs = args; }
+		config.update ('args', newargs, vscode.ConfigurationTarget.Workspace);
 
-			vscode.window.showInformationMessage('Changed args to ' + args);
+			vscode.window.showInformationMessage('Changed args to ' + newargs);
 	});
 
 	context.subscriptions.push(disposable);
