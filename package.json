@@ -1,5 +1,6 @@
 {
   "name": "rocq-bindings",
+  "publisher": "MatthieuSozeau",
   "displayName": "rocq-bindings",
   "description": "Useful commands to develop and work with Rocq",
   "version": "0.0.1",

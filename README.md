@@ -4,7 +4,7 @@ Expose some useful commands for developing on Rocq and with Rocq.
 
 ## Features
 
-- toggleNoInit (toggles the '-noinit' flag in your coqtop.args workspace variable)
+- toggleNoInit: toggles the '-noinit' flag in your coqtop.args workspace variable and call's resets from VSCoq.
 - 
 ## Requirements
 

@@ -2,8 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+let vscodeext : vscode.Extension<any> = vscode.extensions.getExtension('coq-community.vscoq1')?.exports;
+
 function notNoInit (element : string, index : number, array : string[]) {
-	return (element !== '-no-init');
+	return (element !== '-noinit');
 }
 
 // This method is called when your extension is activated
@@ -22,14 +24,12 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 		let config = vscode.workspace.getConfiguration('coqtop');
 		let args = config.get<string[]>('args') ?? [];
-		let newargs : string[] = [];
-		vscode.window.showInformationMessage('coqtop.args = ' + args);
-		vscode.window.showInformationMessage('includes noinit = ' + args?.includes("-noinit"));
-		if (args?.includes("-noinit")) { newargs = args.filter(notNoInit); }
-		else { args?.push ("-noinit"); newargs = args; }
-		config.update ('args', newargs, vscode.ConfigurationTarget.Workspace);
+		if (args?.includes("-noinit")) { args = args.filter(notNoInit); }
+		else { args?.push ("-noinit"); }
+		config.update ('args', args, vscode.ConfigurationTarget.Workspace);
 
-			vscode.window.showInformationMessage('Changed args to ' + newargs);
+		vscode.commands.executeCommand('extension.coq.reset');
+		vscode.window.showInformationMessage('Changed args to ' + args);
 	});
 
 	context.subscriptions.push(disposable);
